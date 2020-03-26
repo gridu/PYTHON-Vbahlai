@@ -1,22 +1,15 @@
-import datetime
-import os
-import json
+from dbservice import *
 
-if (os.path.exists('crawling.json')):
-    os.remove('crawling.json')
-os.system('scrapy crawl crawling -o crawling.json')
-articles = []
+if (__name__ == "__main__"):
+    new_arts = [
+        {"link":"url4", "article_name":"Article4", "text":"Some Text4", "date":"Feb 5, 2019", "author_url":"aurl1", "tags":"tags1"},
+        {"link":"url5", "article_name":"Article5", "text":"Some Text5", "date":"Dec 31, 2020", "author_url":"aurl2,aurl3", "tags":"tags3"}
+    ]
 
-file = open('crawling.json', 'r')
-objs = list(json.load(file))
+    new_auth = [
+        {"url":"aurl4", "full_name":"Name4", "job_title":"Trainee", "linkedin_url":"lurl4"},
+        {"url":"aurl5", "full_name":"Name5", "job_title":"SD", "linkedin_url":""}
+    ]
 
-for each in objs:
-    if len(each['author']) != 0:
-        each['date'] = datetime.datetime.strptime(each['date'], '%b %d, %Y')
-        articles.append(each)
-
-articles.sort(key=lambda elem: elem['date'], reverse=True)
-
-articles = articles[0:5]
-for each in articles:
-    print(each)
+    urls = add_new_articles(new_arts)
+    add_new_authors(new_auth)
