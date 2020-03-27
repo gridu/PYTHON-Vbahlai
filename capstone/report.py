@@ -13,3 +13,4 @@ if (__name__ == "__main__"):
 
     urls = add_new_articles(new_arts)
     add_new_authors(new_auth)
+    top_7_tags_plot(top_7_tags())

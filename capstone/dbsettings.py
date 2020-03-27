@@ -8,7 +8,7 @@ from sqlalchemy import Column, String, Integer
 if (os.path.exists(str(os.getcwd()) + '\database.db')):
     os.remove(str(os.getcwd()) + '\database.db')
 
-engine = create_engine('sqlite:///' + str(os.getcwd()) + '\database.db', echo=True)
+engine = create_engine('sqlite:///' + str(os.getcwd()) + '\database.db', echo=False)
 Base = declarative_base()
 
 class Author(Base):

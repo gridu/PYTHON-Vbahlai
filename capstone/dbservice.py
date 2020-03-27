@@ -1,5 +1,7 @@
 from dbsettings import session, Article, Author
 from datetime import datetime
+from matplotlib import pyplot as plt
+import numpy as np
 
 session.add_all([
     Article(url="url1", title="title1",text="Some text1", publication_date="Sep 18, 2020", author_url="aurl1,aurl2", tags="tag1"),
@@ -26,6 +28,31 @@ def add_new_articles(articles_data):
                         author_url=i["author_url"], tags=i["tags"]))
     session.commit()
     return authors_doublication_check(articles_data)
+
+def top_7_tags():
+    tags_list = []
+    pair = []
+    for each in session.query(Article):
+        tag = str(each.tags)
+        if tag.find(",") != -1:
+            tags_list.extend(tag.split(","))
+        else:
+            tags_list.append(tag)
+    tags_set = set(tags_list)
+    for i in tags_set:
+        pair.append((i, tags_list.count(i)))
+    pair.sort(reverse=True)
+    return pair[:7]
+
+def top_7_tags_plot(tags):
+    objects = tuple([i[0] for i in tags])
+    values = tuple([each[1] for each in tags])
+    y_pos = np.arange(len(objects))
+    plt.barh(y_pos, values, alpha=0.8)
+    plt.yticks(y_pos, objects)
+    plt.xlabel('quantity')
+    plt.title("Top 7 popular tags")
+    plt.show()
 
 def get_authors_with_counter():
     articles = session.query(Article).all()
