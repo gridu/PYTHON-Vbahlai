@@ -7,8 +7,8 @@ from sqlalchemy import Column, String, Integer
 
 if (os.path.exists(str(os.getcwd()) + '\database.db')):
     os.remove(str(os.getcwd()) + '\database.db')
-
-engine = create_engine('sqlite:///' + str(os.getcwd()) + '\database.db', echo=False)
+connection ='sqlite:///' + str(os.getcwd()) + '\database.db'
+engine = create_engine(connection, echo=False)
 Base = declarative_base()
 
 class Author(Base):
@@ -17,8 +17,13 @@ class Author(Base):
     full_name = Column(String, nullable=False)
     job_title = Column(String, nullable=True)
     linkedin_url = Column(String, nullable=True)
-    articles_counter = Column(Integer, nullable=True)
-    counter = 0
+    articles_counter = Column(Integer, nullable=False, default=int(0))
+
+    def __repr__(self):
+        return "<Author-> url:" + self.url + "; full_name:"\
+               + self.full_name + "; job_title:" + self.job_title \
+               + "; linkedin_url:" + str(self.linkedin_url) + "; articles_counter:" \
+               + str(self.articles_counter) + ";>"
 
 class Article(Base):
     __tablename__ = 'articles'
